@@ -1,7 +1,7 @@
-const getGeoLocation = async () => {
+const getGeoLocation = async (options = null) => {
   try {
     if (navigator.geolocation) {
-      var location = await getCurrentPosition();
+      var location = await getCurrentPosition(options);
       return location;
     } else {
       return null;
@@ -11,7 +11,8 @@ const getGeoLocation = async () => {
     return null;
   }
 };
-function getCurrentPosition() {
+function getCurrentPosition(options = null) {
+  console.log(options)
   return new Promise((resolve, reject) => {
     navigator.geolocation.getCurrentPosition(
       (position) => {
@@ -22,7 +23,8 @@ function getCurrentPosition() {
       },
       (error) => {
         reject(error.message);
-      }
+      },
+      options
     );
   });
 }
