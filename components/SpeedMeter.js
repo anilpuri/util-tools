@@ -3,10 +3,7 @@ import { useEffect, useState } from "react";
 import calculateDistance from "@/utils/calculateDistance";
 import getGeoLocation from "@/utils/getGeoLocation";
 const SpeedMeter = () => {
-  const [currentLocation, setCurrentLocation] = useState({
-    latitude: 29.9000643,
-    longitude: 78.7255078,
-  });
+  const [currentLocation, setCurrentLocation] = useState();
   const [distanceCovered, setDistanceCovered] = useState(0);
   const [currentSpeed, setCurrentSpeed] = useState(0);
   //units =  "km" | "mile" | "meter" | "nmi"
