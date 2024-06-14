@@ -3,6 +3,11 @@ import { useEffect, useState } from "react";
 import calculateDistance from "@/utils/calculateDistance";
 import getGeoLocation from "@/utils/getGeoLocation";
 const SpeedMeter = () => {
+  const [options, setOptions] = useState({
+    enableHighAccuracy: true,
+    timeout: 1000,
+    maximumAge: 0,
+  });
   const [currentLocation, setCurrentLocation] = useState(null);
   const [tracking, setTracking] = useState(false);
   const [distanceCovered, setDistanceCovered] = useState(0);
@@ -18,10 +23,10 @@ const SpeedMeter = () => {
     }
 
     return () => clearInterval(interval);
-  }, [distanceCovered, currentLocation, selectedUnit, currentSpeed,tracking]);
+  }, [distanceCovered, currentLocation, selectedUnit, currentSpeed, tracking]);
 
   const intervalFunction = async () => {
-    var currentLocationTemp = await getGeoLocation();
+    var currentLocationTemp = await getGeoLocation(options);
     if (currentLocationTemp) {
       var distance = calculateDistance(
         currentLocation,
@@ -45,10 +50,14 @@ const SpeedMeter = () => {
       {`Latitude: ${currentLocation?.latitude ?? 0}, Longitude: ${
         currentLocation?.longitude ?? 0
       }`}
+      <br />
+      {`High Accuracy: ${options?.enableHighAccuracy === true ? "Yes" : "No"}`}
+      <br />
+      {`Timeout: ${options?.timeout ?? 0}`}
       {tracking ? (
-        <div style={{ paddingTop: "200px" }}>
-          <h1 style={{ width: "100%", textAlign: "center" }}>
-            Current Speed : {currentSpeed}{" "}
+        <div style={{ paddingTop: "150px" }}>
+          <h1 style={{ width: "100%", textAlign: "center", fontSize: "45px" }}>
+            {currentSpeed}{" "}
             {
               { meter: "m/h", nmi: "nmi/h", mile: "mph", km: "km/h" }[
                 selectedUnit
@@ -56,7 +65,7 @@ const SpeedMeter = () => {
             }
           </h1>
           <h2 style={{ width: "100%", textAlign: "center" }}>
-            Distance Covered : {distanceCovered}{" "}
+            Distance : {distanceCovered}{" "}
             {
               { meter: "Meters", nmi: "Nmi's", mile: "Miles", km: "Km's" }[
                 selectedUnit
@@ -132,6 +141,23 @@ const SpeedMeter = () => {
             >
               Nmi
             </button>
+          </div>
+          <div style={{ width: "100%", textAlign: "center", padding: "10px" }}>
+            <label>
+              <input
+                type="checkbox"
+                checked={options?.enableHighAccuracy}
+                onChange={(e) => {
+                  setOptions((prev) => {
+                    return { ...prev, enableHighAccuracy: e.target.checked };
+                  });
+                }}
+              />
+              <span style={{ userSelect: "none", cursor: "pointer" }}>
+                {" "}
+                Enable High Accuracy
+              </span>
+            </label>
           </div>
           <div style={{ textAlign: "center" }}>
             <button
