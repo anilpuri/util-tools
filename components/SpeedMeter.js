@@ -36,7 +36,7 @@ const SpeedMeter = () => {
       var newDistance = Number(distanceCovered) + (distance ?? 0);
       setDistanceCovered(parseFloat(newDistance).toFixed(2));
       setCurrentLocation(currentLocationTemp);
-      setCurrentSpeed(parseInt(distance ?? 0) * 3600);
+      setCurrentSpeed((distance ?? 0) * 3600);
     }
   };
 
